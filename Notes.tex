@@ -1,0 +1,571 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[a4paper, margin=0.6in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\selectlanguage{italian}
+\usepackage{amsmath,amsthm,amssymb,fge,mathrsfs}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{makeidx} %per fare l'indice
+\usepackage{faktor} %per i quozienti
+%tikz (pacchetto per i disegni)
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usetikzlibrary{tikzmark}
+\usetikzlibrary{calc} %per poter fare i calcoli
+\usetikzlibrary{arrows.meta} %per usare veri tipi di frecce
+\usetikzlibrary{calc,patterns,angles,quotes} %per disegnare gli angoli
+\usetikzlibrary{decorations} %per i grafici orientati (con sopra le frecce)
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{backgrounds} %per il colore sullo sfondo delle immagini
+\usetikzlibrary{shapes.geometric} %per i triangoli negli alberi
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{fillbetween} %per colorare le aree comprese tra due grafici
+
+\usepackage{caption} %per la caption sotto alle immagini
+\usepackage[tracking=true]{microtype} %per avvicinare il testo
+\usepackage{enumitem} %per modificare agilmente gli elenchi
+\usepackage{esvect} %per le freccette di vettore sui caratteri
+\usepackage{stmaryrd} %fulmine per il simbolo dell'assurdo
+\usepackage{relsize} %per fare i simboli più grandi
+\usepackage{mathabx} %per il simbolo di dotminus
+\usepackage{esint} %per l'integrale tagliato (fint)
+
+\usepackage[customcolors]{hf-tikz} %per evidenziare pezzi di matrice
+
+\usepackage{verbatim} %per commentare un blocco
+
+\usepackage{multirow} %per la tabella
+\usepackage{array} %per lo spazio nella tabella
+
+%Libreria per gli alberi
+\usepackage[linguistics]{forest}
+
+%Librerie aggiunte
+\usepackage{multicol} %per gli elenchi puntati su più colonne/righe
+\usepackage{multirow}
+
+%pacchetto per il prodotto interno
+\usepackage{physics}
+
+%Libreria per i subfiles
+
+\usepackage{subfiles} %meglio caricarla per ultima
+
+%usiamo paragraph come nuova sottosottosottosezione 
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{0}{\z@}%
+            {-2.5ex\@plus -1ex \@minus -.25ex}%
+            {1.25ex \@plus .25ex}%
+            {\normalfont\normalsize\bfseries}}
+% \makeatother
+% \setcounter{secnumdepth}{} % how many sectioning levels to assign numbers to
+% \setcounter{tocdepth}{}    % how many sectioning levels to show in ToC
+
+\newtheorem{theorem}{Teorema}
+\numberwithin{theorem}{section}
+\newtheorem*{theorem*}{Proposition}
+\newtheorem{corollary}[theorem]{Corollario}
+\newtheorem{proposition}[theorem]{Proposizione}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{lemma*}{Lemma}
+
+\newtheorem{definition}{Definizione}
+\numberwithin{definition}{section}
+
+\newtheorem*{remark}{Osservazione}
+
+\newtheorem{example}{Esempio}
+\numberwithin{example}{section}
+
+\newtheorem{exercise}{Esercizio}
+\numberwithin{exercise}{section}
+
+\renewcommand*{\proofname}{dimostrazione}
+
+\renewcommand{\thefootnote}{[\arabic{footnote}]}% Modify footnote globally
+
+%%%simboli speciali
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\newcommand{\CO}{\mathcal{C}}
+
+\DeclareMathOperator{\Dom}{Dom}
+\DeclareMathOperator{\Ima}{Im}
+
+\DeclareMathOperator{\mcd}{MCD}
+\DeclareMathOperator{\mcm}{mcm}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\spanlin}{span}
+
+%\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+%\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+
+%Necessario per far si che la dimensione del valore assoluto e della norma si adatti all'aromento passato
+%\makeatletter
+%\let\oldabs\abs
+%\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+%\let\oldnorm\norm
+%\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+%\makeatother
+
+%rinomino il comando per il prodotto interno
+\let\pint\braket
+%comando per il prodotto scalare
+\newcommand{\pscal}[2]{\left\langle #1, #2 \right\rangle}
+
+%Spaziatura per i quantificatori
+\let\oldforall\forall
+\renewcommand{\forall}{\; \oldforall \;}
+\let\oldexists\exists
+\renewcommand{\exists}{\; \oldexists \;}
+
+%freccia per la convergenza debole
+\newcommand{\longrightharpoonup}{\xrightharpoonup{\phantom{AB}}}
+
+\newcommand{\warrow}{\xrightharpoonup{\:\, w \:\, }}
+\newcommand{\sarrow}{\overset{s}{\longrightarrow}}
+\newcommand{\wastarrow}{\xrightharpoonup{ w^* }}
+
+
+\setlength{\parindent}{0in} 
+\title{Argomenti IstAn}
+\author{scalengheeandrea }
+\date{January 2023}
+
+\begin{document}
+
+
+\paragraph*{Dubbi}
+
+
+\nocite{Cordier_2005}
+\printbibliography
+
+\begin{itemize}
+    \item The meaning of the rescalation through $\epsilon$ is not clear but it should represent a small change of the mean of a trait after an interaction with the environment. 
+    \item How can we conclude that $f_{\epsilon}(v,\tau)\xrightarrow{\epsilon\to0}h(v,\tau)$. A part from the limit-derivative and limit-integral switch, why does the $f_{\epsilon}$ converges to some $h$?
+    \item The explicit vanishing of $\mathcal{E}_{\epsilon}(\tau)/\epsilon$ for $\epsilon\to0$
+    \item Boundary conditions
+\end{itemize}
+
+\section*{Wealth distribution through Fokker-Plank}
+
+ In the following few pages we will apply some classical kinetic models to study the distribution of wealth of an economic system. In most of these models, the market is represented as an ideal gas, agents correspond to molecules, and each trading event between two agents is considered to be an elastic, or rather money conserving, collision of two molecules. The macroscopic description that emerges correspond to a macroeconomic analysis of a given economic system of which we know some fundamental microeconomic aspects. In order to verify the legitimacy and truthfulness of the description that arises we will check whether or not the large-wealth behavior of the steady state density follows a power-law distribution. Speaking of the italian economist's theory we recall that given a $f(w)$ which represents the density of agents with wealth $w$ then for sufficiently large $w$:
+
+ \[\int_w^{+\infty}f(\tilde{w}) \,d\tilde{w} \sim w^{-\mu}\]
+
+Where $\mu$ is a coefficient called the \textit{Pareto index} and real data attest it in the interval $(1,2.5)$. Pareto believed that this power law applied to the whole distribution, but it turned to be wrong and Mandelbrot proposed a weak version just for the tail of it. We will indeed show that the stationary solution of our distribution satisfies this condition.
+% First of all we state a fundamental result which allows us to describe through a Bolzmann type equation the distribution of trait given its microscopic behaviour in interactions.  
+
+\paragraph*{The model}
+
+Let $v,w\in I$ be the values of a selected trait of two agents, where $I\subseteq\R$. After the interaction we get the values $v^{*},w^{*}$ defined by:
+
+\begin{equation}\label{model0}
+\begin{cases}
+v^{*}=p_1v+q_1w \\
+w^{*}=q_2v+p_2w
+\end{cases}
+\end{equation}
+Where the \textit{interaction coefficients} $p_i$ and $q_i$ are random variables that respectively represent for the agent $i$ the fraction of $j$'s wealth transferred to $i$ and the the fraction that $i$ keeps for herself. Let $f=f(v,t)$ be the density of agents which at time $t\in\R_+$ have value $v\in I$ of the selected trait. We can describe the number of agents having the trait $v$ at time $t$ through the stochastic process $X(t)$, and similarly $Y(t)$ for $w$. Both $X(t)$ and $Y(t)$ have $f(x,t)$ as density function. We assume the random variables to be independent; this is a strong assumption but it will allow us to get to a nice and tractable equation. In order to use the information provided by \ref{model0} we assume that in a given interval of time $\Delta t$ (sufficiently small) can either happen or not a single interaction. Let $T$ be a random variable that takes value $0,1$ with probability:
+
+\[\mathbb{P}\left(T=1\right)=\Delta t \quad \mathbb{P}\left(T=0\right)=1-\Delta t\]
+
+Where $T=1$ is the event in which the interaction happens. Then we have that:
+
+\[X(t+\Delta t)=TX^{*}(t)+(1-T)X(t)\]
+
+Where $X^{*}(t)$ is the obvious extension to random variable of \ref{model0}. Let $\varphi\in C^{\infty}(\R)$ be a function that represents an observable quantity and let us evaluate the mean value of $\varphi(X(t))$ which we will denote $\langle\varphi(X(t))\rangle$:
+
+\[\langle\varphi(X(t+\Delta t))\rangle=\langle\varphi(TX^{*}(t)+(1-T)X(t))\rangle=\Delta t\langle\varphi(X^{*}(t))\rangle+(1-\Delta t)\langle\varphi(X(t))\rangle\]
+
+Which leads us to:
+
+\[\frac{\langle\varphi(X(t+\Delta t))\rangle-\langle\varphi(X(t))\rangle}{\Delta t}=\langle\varphi(X^{*}(t))\rangle-\langle\varphi(X(t))\rangle\]
+
+Passing to the limit:
+
+    \[\frac{d}{dt}\langle\varphi(X(t))\rangle=\langle\varphi(X^{*}(t))-\varphi(X(t))\rangle\]
+
+Let us inspect the right hand term. We are denoting a single expectation (with respect to $T$'s distribution), while we are also taking into account also the expectation determined by the distribution of the interaction coefficients. In fact $\langle\cdot\rangle$ is the expectation with respect to every random variable. This can be considered a quite obvious observation but I think it is important to remark. Back to the expected value,
+of course same calculations hold for $Y$ and then we get:
+
+\begin{equation}\label{bolz}
+    \frac{d}{dt}\int_{\R}\varphi(v)f(v,t) \,dv=\frac{1}{2}\left\langle\int_{\R\times\R}(\varphi(v^{*})+\varphi(w^{*})-\varphi(v)-\varphi(w))f(v,t)f(w,t) \,dv\,dw\right\rangle
+\end{equation}
+
+Where the remaining expectation is due to $p_i,q_i$. In the latter equation the joint probability distribution of the random variables can be written as the product of the two single densities because of the crucial assumption of their independence. This hypothesis is actually strong, because it does not look perfectly reasonable, but it is necessary in order to get this closed form which will allow us to work comfortably. The \ref{bolz} gives us a clear interpretation of the macroscopic phenomena where the infinitesimal variation of the trait at time $t$ is due to the microscopic interaction at time $t$, which is measured by the \textit{interaction operator} at the right hand side of the equation. 
+
+This process can be generalized to a situation in which not only two agent interact but there are many and therefore the value of $v^{*}$ is determined by:
+
+\begin{equation}\label{interactiongen}
+    v^{*} = v + P_E(v)z - P(v)v + Q(v)\eta
+\end{equation}
+
+Where $z$ is the amount of trait absorbed by the agent from the environment and $P_E(v)$ is the intensity of the variation of the trait $v$ due to the environment. $Q$ is the variation of the trait due to random effects $\eta$. Let us denote with $M_E$ the (finite) mean of the environment and $\mathcal{E}(z)$ be the density of $z$. We furthermore assume that all functions with which we will work have at most linear growth, this assumption will justify our computation and will be satisfied in the model. Under this assumptions we get:
+
+\begin{equation}\label{Bolz}
+    \frac{d}{dt}\int_{I}f(v,t)\varphi(v) \,dv = \left\langle\int_{I\times I}(\varphi(v^{*})-\varphi(v))f(v,t)\mathcal{E}(z) \,dv\,dz\right\rangle
+\end{equation}
+
+We now aim to shift our attention to the evolution over time of the probability density function and therefore determine the Fokker-Plank equation linked to the \ref{Bolz}. Let us suppose that the interaction \ref{interactiongen} produces a small variation of the mean. We obtain this by considering the scaling:
+
+\begin{equation}\label{scaling}
+    P_E(\cdot)\rightarrow\epsilon P_E(\cdot),\quad P(\cdot)\rightarrow\epsilon P(\cdot),\quad Q(\cdot)\rightarrow\epsilon^{\frac{1}{2}} Q(\cdot)
+\end{equation}
+
+The $1/2$ power for $Q$ is due to issues related to the boundedness of the variance.
+
+Let $I=\R_+$ and we get:
+
+\[\langle v^{*}-v\rangle=\langle \epsilon P_E(v)z-\epsilon P(v)v+\epsilon^{1/2}Q(v)\eta\rangle=\epsilon\langle P_E(v)z-P(v)v\rangle =\vcentcolon \epsilon A(v,z)\]
+\[\langle (v^{*}-v)^2 \rangle = \epsilon\lambda Q^2(v) + \epsilon^2A^2(v,z)\]
+
+Then for any function $\varphi\in C^{\infty}(\R_+)$ we can expand in Taylor series and get for some $\theta\in[0,1]$:
+
+\begin{align*}
+\langle\varphi(v^{*})-\varphi(v)\rangle & = \left\langle \varphi'(v)(v^{*}-v)+\frac{1}{2}\varphi''(v)(v^{*}-v)^2+\frac{1}{6}\varphi(v+\theta(v^{*}-v))(v^{*}-v)^3 \right\rangle \\
+& = \epsilon\left(\varphi'(v)A(v,z)+\frac{1}{2}\varphi''(v)\lambda Q^2(v)\right) + \underbrace{\frac{1}{2}\epsilon^2\varphi''(v)A^2(v,z)+\frac{1}{6}\langle\varphi'''(v+\theta(v^{*}-v))(v^{*}-v)^3\rangle}_{\vcentcolon=R_{\epsilon}(v,z)}
+\end{align*}
+
+Then we set $\tau=\epsilon t$ and $f_{\epsilon}(v,\tau)=f(v,t)$ then from \ref{Bolz} we get:
+
+\begin{align*}
+\frac{d}{dt}\int_{\R_+}\varphi(v)f_{\epsilon}(v,\tau) \,d\tau & = \int_{\R_+\times\R_+} \left(\varphi'(v)A(v,z)+\frac{1}{2}\varphi''(v)\lambda Q^2(v)\right)f_{\epsilon}(v,\tau)\mathcal{E}(z) \,dv\,dz + \frac{1}{\epsilon}\mathcal{R}_{\epsilon}(\tau) \\
+& = \int_{\R_+}\left(\varphi'(v)(P_E(v)M_E-P(v)v)+\frac{1}{2}\varphi''(v)\lambda Q^2(v)\right) f_{\epsilon}(v,\tau) \,dv + \frac{1}{\epsilon}\mathcal{R}_{\epsilon}(\tau)
+\end{align*}
+
+Where:
+
+\[\mathcal{R}_{\epsilon}(\tau) = \int_{\R_+\times\R_+}R_{\epsilon}(v,z)f_{\epsilon}(v,\tau)\mathcal{E}(z) \,dv\,dz\]
+
+Now get observe that:
+
+\[\left|\frac{1}{\epsilon}\mathcal{R}_{\epsilon}(\tau)\right|\leq \int_{\R_+\times\R_+}|\frac{1}{2}\epsilon\varphi''(v)A^2(v,z)+\frac{1}{6\epsilon}\overbrace{\langle\varphi'''(v+\theta(v^{*}-v))(v^{*}-v)^3\rangle}^{\leq \varphi''''(v(\theta))\langle(v^{*}-v)^3\rangle}| \,dv\,dz\xrightarrow{\epsilon\to0}0\]
+
+Then passing to the limit $\epsilon\to0$ we observe that the Bolzman equation \ref{Bolz} perturbed by the scaling \ref{scaling} is well approximated by the weak-form Fokker-Plank equation:
+
+\begin{equation}\label{Intform}
+    \frac{d}{dt}\int_{\R_+}\varphi(v)h(v,\tau) \,d\tau = \int_{\R_+}\left(\varphi'(v)(P_E(v)M_E-P(v)v)+\frac{1}{2}\varphi''(v)\lambda Q^2(v)\right) h(v,\tau) \,dv    
+\end{equation}
+
+
+
+Which is the weak formulation of the Fokker-Plank equation:
+
+\begin{equation}
+    \frac{\partial h}{\partial\tau}=\frac{\lambda}{2}\frac{\partial^2}{\partial v^2}(Q(v)^2h)+\frac{\partial}{\partial v}((P(v)v-P_E(v)M_E)h)
+\end{equation}
+
+% \newpage
+
+% \[\begin{cases}
+% v^{*}=v+P(v)(w-v)+Q(v)\eta \\
+% w^{*}=v+P(v)(v-w)+Q(w)\tilde{\eta}
+% \end{cases}\]
+
+% Where the non negative functions $P$ and $Q$ model the interaction, in particular $P$ gives information about how much is exchanged between the agents and $Q$ the contribution due to random effects. We furthermore assume $\eta,\tilde{\eta}$ to be independent identically distributed, centered in the origin and with bounded variance. We use this model to study the evolution of the distribution of the trait. Let $f=f(v,t)$ be the density of agents which at time $t\in\R_+$ have value $v\in I$ of the selected trait.
+
+\newpage
+
+% Let us consider two economic agents in a economic system, we will model the microscopic interactions between these agents and a kinetic theory result (that I will formally introduce in the final dissertation) that allows us to describe the distribution of wealth (in the whole system) over time. An agent's state at time $t\geq0$ is completely described by her wealth $v\geq0$. Her wealth after a trade is denoted by $v^{*}$. Trades between agents are of the form:
+
+% \[v^{*}=p_1v+q_1w,\quad w^{*}=q_2v+p_2w\]
+
+% Where the \textit{interaction coefficients} $p_i$ and $q_i$ are random variables that respectively represent for the agent $i$ the fraction of $j$'s wealth transferred to $i$ and the the fraction that $i$ keeps for herself. 
+
+\section*{A significant model}
+
+
+Until now we presented the general model, let us study the following one:
+
+\begin{equation}\label{Model}
+\begin{cases}
+v^{*}=\left(1-\gamma+\eta_1\right)v+\gamma w \\
+w^{*}=\left(1-\gamma+\eta_2\right)w+\gamma v
+\end{cases}
+\end{equation}
+
+Where $\gamma\in(0,1)$ is the \textit{risk propensity}, namely the coefficient that states the agent's propensity to invest in a single trade all of her money. While $\eta_i$ are random variables, independent of $v$ and $w$, that represent the system's contribution to the trade for each agent. Different choices for $\eta_i$ lead to different models. One of the easiest yet meaningful is $\eta_i=\pm r\in(0,\gamma)$ uniformly distributed. In this specific case the random effect given by $\eta_i$ should be interpreted as the \textit{intrinsic risk} of the market, i.e. the fraction of an agent's capital that she is willing to gamble on. Interesting results concerning the model's behavior with respect to $r$ and $\gamma$ can be obtained numerically, it can be showed that low-risk zones (due to the market stochastic component) the wealth distribution shows socialistic behavior characterized by slim tails, while if the risk is high the market falls into capitalistic where tails follow the Pareto law.
+
+In this model in order to get conservation of the average wealth we have to impose that the random parameters are centered, i.e. $\langle\eta_i\rangle=0\quad i=1,2$ and the coefficients become:
+
+\[P_E(v) = \gamma \quad P(v) = -\gamma \quad Q(v) = v\]
+
+Let us set $M_E=1$ for the sake of simplicity. Then \ref{Bolz} becomes:
+
+\begin{equation}\label{Bolzdef}
+    \frac{\partial h}{\partial\tau}=\frac{\lambda}{2}\frac{\partial^2}{\partial v^2}(v^2h)+\gamma\frac{\partial}{\partial v}((v-1)h)
+\end{equation}
+
+\paragraph*{Boundary conditions}
+
+We ended up with \ref{Bolzdef} from \ref{Intform} thanks to integration by parts where we used that the boundary terms are zero. In fact if we choose $h$ such that it has a rapid decay at infinity then the integrand vanishes, while at $v=0$ is required a no-flux boundary condition. We get it by imposing the preservation of the mean value and the conservation of the mass. In fact:
+
+\begin{align*}\int_{\R_+}\left(\varphi'(v)\gamma(1-v)+\frac{1}{2}\varphi''(v)\lambda Q^2(v)\right) h(v,\tau) \,dv & =  \left[\varphi(v)\gamma(1-v)h(v,\tau)+\frac{\lambda}{2}\varphi'(v) Q^2(v)h(v,\tau)\right]_{\partial\R_+} \\
+& - \int_{\R_+}\partial_v\left((1-v)h(v,\tau)\right)\varphi(v) \,dv\\
+& -\int_{\R_+}\partial_v\left(\frac{1}{2}\lambda Q^2(v)h(v,\tau)\right)\varphi'(v)  \,dv  \\
+& = -\gamma\varphi(v)h(v,\tau)-\frac{\lambda}{2}\varphi'(v)Q^2(v)h(v,\tau)\big|_{v=0} \\
+& - \left[\partial_v\left(\frac{1}{2}\lambda Q^2(v)h(v,\tau)\right)\varphi(v)\right]_{\partial\R_+} \\
+& + \int_{\R_+} \partial_v\left(\partial_v\left(\frac{1}{2}\lambda Q^2(v)h(v,\tau)\right)+(v-1)h(v,\tau)\right)\varphi(v)\,dv \\
+\end{align*}
+Which, under the hypotheses of vanishing of the boundary terms, leads to:
+
+\begin{equation}\label{boundary}
+    \frac{d}{dt}\int_{\R_+}\varphi(v)h(v,t)\,dv = \int_{\R_+} \partial_v\left(\partial_v\left(\frac{1}{2}\lambda Q^2(v)h(v,\tau)\right)+(v-1)h(v,\tau)\right)\varphi(v)\,dv 
+\end{equation}
+
+% Where $B_0$ is the boundary term given by:
+
+% \[B_0(\tau)=\partial_v\left(\frac{1}{2}\lambda Q^2(v)h(v,\tau)\right)\varphi(v)-\gamma\varphi(v)h(v,\tau)-\frac{\lambda}{2}\varphi'(v)Q^2(v)h(v,\tau)\bigg|_{v=0}\]
+
+We get the boundary conditions by imposing the preservation of mass and of mean value, which translate into a \textit{no-flux boundary condition}. Through the conservation of mass (by taking $\varphi(v)=1$ into \ref{boundary}) we get:
+
+\begin{equation}\label{cond1}
+    0=\partial_v\left(\frac{1}{2}\lambda Q^2(v)h(v,\tau)\right)-\gamma h(v,\tau)\bigg|_{v=0}
+\end{equation}
+
+And if we impose the conservation of the mean value (by taking $\varphi(v)=v$ into \ref{boundary}) we get:
+
+\begin{equation}\label{cond2}
+0=-\underbrace{\int_{\R_+}(v-1)h(v,\tau) \,d\tau}_{=0\,\ast}+\frac{\lambda}{2}Q^2(v)h(v,\tau)\bigg|_{v=0}=\frac{\lambda}{2}Q^2(v)h(v,\tau)\bigg|_{v=0}
+\end{equation}
+
+Where $\ast$ holds because we set $M_E=1$ and we imposed that the mean is conserved. Then the equation in \ref{Bolzdef} is justified by the assumption made in this section. The model \ref{Model} already satisfies condition \ref{cond1}, actually directly from \ref{Bolzdef} we can get the conservation of mass, while in order to make \ref{cond2} hold we have to impose that the random variables $\eta_i$ are centered, otherwise the mean value is not preserved, in fact:
+
+\[\langle v^{*}+w^{*}\rangle=(1+\langle\eta_1\rangle)v +(1+\langle\eta_2\rangle)w\]
+
+\paragraph*{Stationary solution}
+
+Let's solve the stationary equation deriving from \ref{Bolzdef}. We can rewrite the latter as follows:
+
+\[\partial_v\left[\left(\gamma(v-1)+\frac{\lambda}{2}v\right)h+\frac{\lambda}{2}v\partial_v(vh)\right]=0\]
+
+% By expanding the derivatives we get:
+
+% \begin{equation}
+%     \frac{\lambda}{2}v^2\partial_{vv}h+\left((2\lambda+\gamma)v-\gamma)\right)\partial_vh+(\lambda+\gamma)h=0
+% \end{equation}
+
+Then by integrating per parts over $[0,v]$ we get:
+
+\[\left(\gamma(v-1)+\frac{\lambda}{2}v\right)h+\frac{\lambda}{2}v\partial_v(vh)=0\]
+
+Rewriting ($\partial_vh=\dot{h}$):
+
+\[\dot{h}+2\left(\frac{\lambda+\gamma}{\lambda v}-\frac{\gamma}{\lambda v^2}\right)h=0\]
+
+This first order ODE can be solved usually:
+
+\[\int \frac{\lambda+\gamma}{\lambda v}-\frac{\gamma}{\lambda v^2} \,dv = (\gamma+\lambda)ln(v)+\frac{\gamma}{\lambda}\frac{1}{v} +c \]
+
+For some $c\in\R$. In order to determine the costant $c$ we are going to use again the boundary conditions. Back to the equation we get:
+
+\[h(v) = c\cdot exp\left\{-2\frac{\gamma+\lambda}{\lambda}ln(v)-2\frac{\gamma}{\lambda}\frac{1}{v}\right\} = c\frac{exp\left\{-\frac{\mu-1}{v}\right\}}{v^{\mu+1}}\]
+
+Where $\mu=1+2\frac{\gamma}{\lambda}>1$. Then being $h$ a probability density function we get:
+
+\[\int_{\R}c\frac{e^{-\frac{\mu-1}{v}}}{v^{\mu+1}} \,dv=1 \]
+
+Through the change of variable $v=\frac{\mu-1}{t}$ ($dv=-\frac{v}{t}dt$):
+
+\[\int_{+\infty}^{-\infty} e^{-t}v^{-\mu-1}-\frac{v}{t} \,dt=\frac{1}{(\mu-1)^{\mu}}\int_{-\infty}^{+\infty}e^{-t}t^{\mu-1} \,dt=\frac{\Gamma(\mu)}{(\mu-1)^{\mu}}\]
+
+Finally:
+
+\begin{equation}
+    h_{\infty}(v)=\frac{(\mu-1)^{\mu}}{\Gamma(\mu)}\frac{exp\left\{-\frac{\mu-1}{v}\right\}}{v^{\mu+1}}
+\end{equation}
+
+Of course we get that for $v\to+\infty$ ($c=\frac{(\mu-1)^{\mu}}{\Gamma(\mu)}$):
+
+% \[\lim_{v\to+\infty}\frac{h_{\infty}(v)}{cv}=1\]
+
+% Therefore:
+
+\[h_{\infty}(v)\sim cv^{-(\mu+1)}\]
+
+And then:
+
+\[\int_v^{+\infty} h_{\infty}(w) \,dw \sim cv^{-\mu}\]
+
+Therefore we can see that the stationary distribution follows the Pareto power law for high incomes.
+
+
+\paragraph*{Dealing with the PDE}
+
+Let us solve the original PDE:
+
+
+By expanding the derivatives we get:
+
+\begin{equation}\label{eq1.1}
+    \frac{\lambda}{2}v^2\partial_{vv}h+\left((2\lambda+\gamma)v-\gamma)\right)\partial_vh+(\lambda+\gamma)h=\partial_t h
+\end{equation}
+
+We would like to rewrite \ref{eq1.1} in a form such that the terms figuring spatial derivatives (with respect to \textit{wealth} in our case) collapse onto the highest order derivative. If we manage to do so we will be able to determine the solution of the PDE through classical heat equation theory (properly adjusting the boundary conditions).
+
+If we rewrite \ref{eq1.1} in order to free the highest order derivative from the independent variable as follows:
+
+\[\partial_{vv}h+\frac{2}{\lambda v^2}\left((2\lambda+\gamma)v-\gamma)\right)\partial_vh+\frac{2(\lambda+\gamma)}{\lambda v^2}h\]
+
+Then we have no hope in any change of variables that allows us to get a heat equation. Indeed holds the following.
+
+\begin{theorem*}
+Let $p,q\in C(\R_+)$ and the ODE:
+\begin{equation}\label{ode1}\ddot{y}+p\dot{y}+y=0\end{equation}
+There exists a change of variable such that the equation \ref{ode1} has costant coefficients if and only if $\frac{(\dot{q}+2pq)}{q^{3/2}}$ is constant.
+\end{theorem*}
+
+I found it here
+\begin{center}
+https://math.stackexchange.com/questions/466492/changing-2nd-order-homogeneous-differential-equation-to-the-one-with-constant-co
+\end{center}
+can we consider it true? There's even a proof which looks all right
+
+\hspace{5px}
+
+In our case the problem is given by the coefficient of the first order derivative. There is a costant part (in \ref{eq1.1}) that breaks the machinery of change of variables which would have allowed us to transform it in a heat equation.
+
+We now analyze a model in which we are going to be able to explicitly solve the PDE which will arise. In particular we assume that the economic system is \textit{closed}, namely where the agents interact alone, without any contribution. We wont get a heat equation, because the term $\lambda=\langle\eta_i^2\rangle$ will be $0$, given that $\eta_i\equiv0$ because of the assumption. 
+
+Let us suppose that in our model the stochastic component is null, i.e. $\eta_i\equiv0$. This assumption describes a closed economic system, in which the two agents interact without any external contribution. Then we end up with:
+
+\[\begin{cases}
+v^{*}=\left(1-\gamma\right)v+\gamma w \\
+w^{*}=\left(1-\gamma\right)w+\gamma v
+\end{cases}\]
+
+Therefore the corresponding Fokker-Planck equation is:
+
+\begin{equation}
+    \frac{\partial h}{\partial t}=\gamma\frac{\partial}{\partial v}((v-M_E)h)
+\end{equation}
+Which can be rewritten as:
+\begin{equation}\label{eq2}
+    \partial_th-\gamma (v-M_E)\partial_v h=\gamma h
+\end{equation}
+
+By the method of characteristics we solve \ref{eq2}. We have to solve the following Cauchy's problem:
+\[\begin{cases}
+\dot{\alpha}=-\gamma (\alpha - M_E) \\
+\dot{\beta}=\gamma \beta
+\end{cases},\quad \begin{cases}
+\alpha(0)=r \\
+\beta(0)=h_0(r)
+\end{cases}\]
+
+Where we set $h_0$ to be the initial distribution of wealth. It is solved by:
+    \[\alpha(t)=(r-M_E)e^{-\gamma t}+M_E,\quad \beta(t)=h_0(r)e^{\gamma t}\]
+Then by inverting $v=\alpha(t,r)$ we get:
+\[r=(v-M_E)e^{\gamma t}+M_E\]
+And then:
+\[h(v,t)=e^{\gamma t}h_0\left((v-M_E)e^{\gamma t}+M_E\right)\]
+
+If we assume that wealth is uniformly distributed over a closed interval $[0,2M_E]$ then while time passes the distribution collapses into a Dirac delta centered in the average $M_E$. For $M_E=5$ and $\gamma=0.2$ we get:
+
+
+\nocite{FKL}
+\printbibliography
+
+
+
+\vspace{10mm}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = left,
+    xlabel = \(v\),
+    ylabel = {\(h(v)\)}, 
+    ymin=0,
+    ymax=20,
+]
+
+\addplot[
+domain=0:10,
+smaples=100,
+color=grey
+] coordinates {(5,0)(5,20)};
+%Below the red parabola is defined
+\addplot [
+    domain=0:10,
+    samples=100, 
+    color=red,
+]
+{5};
+\addlegendentry{$t=0$}
+%Here the blue parabola is defined
+\addplot [
+    domain=0:10, 
+    samples=100, 
+    color=blue,
+    ]
+    {6};
+\addlegendentry{$t=1$}
+
+\addplot [
+domain=1:9,
+samples=100,
+color=green,
+]{7};
+\addlegendentry{$t=2$}
+
+\addplot [
+domain=2:8,
+samples=100,
+color=yellow,
+]{9};
+\addlegendentry{$t=3$}
+
+\addplot [
+domain=3:7,
+samples=100,
+color=orange,
+]{11};
+\addlegendentry{$t=4$}
+
+\addplot [
+domain=4:6,
+samples=100,
+color=lightblue,
+]{14};
+\addlegendentry{$t=5$}
+
+\addplot [
+domain=4.5:5.5,
+samples=100,
+color=brown,
+]{17};
+\addlegendentry{$t=6$}
+
+
+\addplot [
+domain=4.8:5.2,
+samples=100,
+color=purple,
+]{20};
+\addlegendentry{$t=7$}
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\newpage
+
+\nocite{Furioli2017FokkerPlanckEI}
+\nocite{Cordier_2005}
+\nocite{second}
+
+% \nocite{JOUR}
+\printbibliography
+
+\end{document} 

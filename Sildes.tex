@@ -1,0 +1,438 @@
+%!TEX program = xelatex
+\documentclass[10pt, compress]{beamer}
+\usetheme[titleprogressbar]{m}
+\usepackage{booktabs}
+\usepackage[italian]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[scale=2]{ccicons}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{pst-node}
+\usepackage[inline]{enumitem}
+\usepackage{tikz}
+\usepackage{biblatex} %Imports biblatex package
+\addbibresource{sample.bib} %Import the bibliography file
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usepackage{tikz-cd}
+\usepackage{pgfplots}
+\usepackage{pst-node}
+%\uspackage{auto-pst-pdf}
+\usepackage{tikz-cd} 
+\usepackage{graphicx, animate}
+\usepackage{graphicx}
+\pgfplotsset{%
+    ,compat=1.12
+    ,every axis x label/.style={at={(current axis.right of origin)},anchor=north west}
+    ,every axis y label/.style={at={(current axis.above origin)},anchor=north east}
+    }
+\newlist{inlineroman}{enumerate*}{1}
+\setlist[inlineroman]{itemjoin*={{, and }},afterlabel=~,label=\Roman*.}
+
+\newcommand{\inlinerom}[1]{
+\begin{inlineroman}
+#1
+\end{inlineroman}
+}
+
+\newcommand{\ctikz}[1]{
+\begin{center}
+\begin{tikzpicture}
+\node{#1}
+\end{tikzpicture}
+\end{center}
+}
+
+\newcommand{\ctikzo}[1]{
+\begin{center}
+\begin{tikzpicture}
+\node[opacity=0]{#1}
+\end{tikzpicture}
+\end{center}
+}
+
+\newcommand{\tikzz}[1]{
+\begin{tikzpicture}
+\node{#1}
+\end{tikzpicture}
+}
+
+\newcommand{\tikzo}[1]{
+\begin{tikzpicture}
+\node[opacity=0]{#1}
+\end{tikzpicture}
+}
+
+\newcommand{\ctikzi}[1]{
+\begin{center}
+\begin{tikzpicture}
+\node[opacity=0.2]{#1}
+\end{tikzpicture}
+\end{center}
+}
+
+\newcommand{\tikzi}[1]{
+\begin{tikzpicture}
+\node[opacity=0.2]{#1}
+\end{tikzpicture}
+}
+
+\newcommand{\semitransp}[2][1]{\textcolor{#1}{#2}}
+
+\newcommand{\comment}[1]{}
+\usepgfplotslibrary{dateplot}
+
+\title{A brief wealth distribution analysis}
+\subtitle{}
+\author{Andrea Scalenghe}
+\institute{Equazioni della Fisica Matematica}
+%\date{22 Luglio 2022}
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Framework}
+    
+    \begin{center}
+        Ideal Gas $\rightarrow$ Market \quad - \quad Molecule $\rightarrow$ Economic Agent
+    \end{center}
+    \newline
+    \begin{center}
+        Microscopic Interaction $\rightarrow$ Microeconomic description
+    \end{center}
+
+    \includegraphics[scale=0.5]{gases.png}
+    \centering
+
+\end{frame}
+
+\begin{frame}{Microeconomic description}
+    Let us consider $v,w\in \mathbb{R}_+$ the wealth of two agents. After their interaction the updated values will be $v^{*},w^{*}$:
+    \[\begin{cases}
+v^{*}=p_1v+q_1w \\
+w^{*}=q_2v+p_2w
+\end{cases}\]
+Where the \textit{interaction coefficients} $p_i$ and $q_i$ are random variables that respectively represent for the agent $i$ the fraction of her wealth that she keeps for herself and the fraction of $j$'s wealth traded.
+\end{frame}
+
+\begin{frame}{From micro to macro}
+    Let $X_t,Y_t$ be random variables which describe the number of agents with wealth $v,w$ at time t:
+
+    \[X^{*}_t=p_1X_t+q_1Y_t \quad Y^{*}_t=q_2X_t+p_2Y_t\]
+
+    Both $X_t,Y_t$ have density function $f(v,t)$. 
+\end{frame}
+
+\begin{frame}{From micro to macro}
+    \begin{itemize}
+    
+    \item Let us suppose that in a time interval $\Delta t$ the probablity of an interaction to happen is directly proportional to $\Delta t$.
+    \item Let $T$ be a random variable such that:
+
+    \[\mathbb{P}(T=1)=\Delta t \quad \mathbb{P}(T=0)=1-\Delta t\]
+
+    Where $\{T=1\}$ is the event in which the interaction happens.
+    
+    \item Then:
+
+    \[X(t+\Delta t)=TX^{*}(t)+(1-T)X(t)\]
+
+    We assume $X$ and $T$ to be independent.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{From micro to macro}
+    Let $\varphi\in C^{\infty}(\mathbb{R})$ be a function that represents an observable quantity and let us evaluate the mean value of $\varphi(X(t))$ which we will denote $\langle\varphi(X(t))\rangle$:
+
+\[\langle\varphi(X(t+\Delta t))\rangle=\langle\varphi(TX^{*}(t)+(1-T)X(t))\rangle=\Delta t\langle\varphi(X^{*}(t))\rangle+(1-\Delta t)\langle\varphi(X(t))\rangle\]
+Which leads us to:
+
+\[\frac{\langle\varphi(X(t+\Delta t))\rangle-\langle\varphi(X(t))\rangle}{\Delta t}=\langle\varphi(X^{*}(t))\rangle-\langle\varphi(X(t))\rangle\]
+
+Passing to the limit:
+
+    \[\frac{d}{dt}\langle\varphi(X(t))\rangle=\langle\varphi(X^{*}(t))-\varphi(X(t))\rangle\]
+\end{frame}
+
+\begin{frame}{From micro to macro}
+    Same computations hold for $Y_t$ and therefore we get:
+
+    \[2\frac{d}{dt}\langle\varphi(X_t)\rangle=\langle\varphi(X^{*}(t))+\varphi(Y^{*}(t))-\varphi(X(t))-\varphi(Y(t))\rangle\]
+
+    We now assume independence between $X$ and $Y$ and get:
+
+    \[ \frac{d}{dt}\int_{\mathbb{R}}\varphi(v)f(v,t)dv=\frac{1}{2}\left\langle\int_{\mathbb{R}^2}(\varphi(v^{*})+\varphi(w^{*})-\varphi(v)-\varphi(w))f(v,t)f(w,t)dvdw\right\rangle \]
+\end{frame}
+
+\begin{frame}{A different model}
+    We consider the following model:
+
+    \[v^{*} = v + P_E(v)z - P(v)v + Q(v)\eta\]
+
+    Where $z$ is the amount of wealth absorbed by the agent (and $M_E$ its mean value) from the environment and $P_E(v)$ is the intensity of the variation of the trait $v$ due to the environment. $Q$ is the variation of the wealth due to random effects $\eta$. We get:
+
+    \[\frac{d}{dt}\int_{I}f(v,t)\varphi(v) \,dv = \left\langle\int_{I\times I}(\varphi(v^{*})-\varphi(v))f(v,t)\mathcal{E}(z) \,dv\,dz\right\rangle\]
+\end{frame}
+
+\begin{frame}{From Boltzmann to Fokker-Plank}
+    Under suitable hypotheses and through a perturbation of the momenta we end up with:
+
+\hspace{5mm}
+
+    \[\frac{\partial h}{\partial\tau}=\frac{\lambda}{2}\frac{\partial^2}{\partial v^2}(Q(v)^2h)+\frac{\partial}{\partial v}((P(v)v-P_E(v)M_E)h)\]
+
+\hspace{5mm}
+
+    In order to get this PDE we impose the conservation of mass and of the mean value.
+\end{frame}
+
+
+
+\begin{frame}{Reality check}
+    Pareto-Mandelbrot theory states that given $f(w)$ number of agents with wealth $w$ then for sufficiently large $w$ holds:
+    
+    \hspace{5mm}
+    
+    \[\int_w^{+\infty}f(v) \,dv \sim w^{-\mu}\]
+
+\hspace{5mm}
+
+    Where $\mu\in(1,2.5)$ is the Pareto index. We will check if the stationary distribution satisfies this condition.
+\end{frame}
+
+\begin{frame}{A significant model}
+    Until now we presented the general model, let us study the following one:
+
+\begin{equation*}\label{Model}
+\begin{cases}
+v^{*}=\left(1-\gamma+\eta_1\right)v+\gamma w \\
+w^{*}=\left(1-\gamma+\eta_2\right)w+\gamma v
+\end{cases}
+\end{equation*}
+
+Where $\gamma\in(0,1)$ is the \textit{risk propensity} while $\eta_i$ are random variables, independent of $v$ and $w$, that represent the system's contribution to the trade for each agent.
+
+\end{frame}
+
+\begin{frame}{A significant model}
+    In order to get conservation of the average wealth in the model we have to impose that the random parameters are centered, i.e. $\langle\eta_i\rangle=0, i=1,2$, in fact:
+    
+    \[\langle v^{*}+w^{*}\rangle=(1+\langle\eta_1\rangle)v +(1+\langle\eta_2\rangle)w\]
+    
+    And the coefficients become:
+
+\[P_E(v) = \gamma \quad P(v) = -\gamma \quad Q(v) = v\]
+
+While the PDE is:
+
+\[\frac{\partial h}{\partial\tau}=\frac{\lambda}{2}\frac{\partial^2}{\partial v^2}(v^2h)+\gamma\frac{\partial}{\partial v}((v-1)h)\]
+\end{frame}
+
+
+\begin{frame}{Stationary solution}
+    Let's solve the related stationary equation. We can rewrite the latter as follows:
+
+\[\partial_v\left[\left(\gamma(v-1)+\frac{\lambda}{2}v\right)h+\frac{\lambda}{2}v\partial_v(vh)\right]=0\]
+
+Then by integrating per parts over $[0,v]$ we get:
+
+\[\left(\gamma(v-1)+\frac{\lambda}{2}v\right)h+\frac{\lambda}{2}v\partial_v(vh)=0\]
+
+Rewriting ($\partial_vh=\dot{h}$):
+
+\[\dot{h}+2\left(\frac{\lambda+\gamma}{\lambda v}-\frac{\gamma}{\lambda v^2}\right)h=0\]
+\end{frame}
+
+\begin{frame}{Stationary solution}
+    Then we get:
+
+    \[h(v) = c\frac{exp\left\{-\frac{\mu-1}{v}\right\}}{v^{\mu+1}}\]
+
+    Where $\mu=1+2\frac{\gamma}{\lambda}>1$ and $c\in\mathbb{R}$ is such that:
+
+    \[\int_{\mathbb{R}}c\frac{e^{-\frac{\mu-1}{v}}}{v^{\mu+1}} \,dv=1 \Rightarrow c=\frac{\Gamma(\mu)}{(\mu-1)^{\mu}}\]
+
+    Finally:
+
+    \[h_{\infty}(v)=\frac{(\mu-1)^{\mu}}{\Gamma(\mu)}\frac{exp\left\{-\frac{\mu-1}{v}\right\}}{v^{\mu+1}}\]
+    
+\end{frame}
+
+\begin{frame}{Dealing with the PDE}
+    By expanding the derivatives we get:
+
+\begin{equation*}\label{eq1.1}
+    \frac{\lambda}{2}v^2\partial_{vv}h+\left((2\lambda+\gamma)v-\gamma)\right)\partial_vh+(\lambda+\gamma)h=\partial_t h
+\end{equation*}
+
+We would like to determine the solution of the PDE through classical heat equation theory.
+
+Freeing the highest order derivative from the independent variable we get:
+
+\[\partial_{vv}h+\frac{2}{\lambda v^2}\left((2\lambda+\gamma)v-\gamma)\right)\partial_vh+\frac{2(\lambda+\gamma)}{\lambda v^2}h\]
+
+
+\end{frame}
+
+\begin{frame}{Dealing with the PDE}
+  We have no hope in any change of variables that allows us to get a heat equation. Indeed holds the following.
+
+\begin{theorem}
+Let $p,q\in C(\mathbb{R}_+)$ and the ODE:
+\begin{equation*}\label{ode1}\ddot{y}+p\dot{y}+qy=0\end{equation*}
+There exists a change of variable such that the equation \ref{ode1} has costant coefficients if and only if $\frac{(\dot{q}+2pq)}{q^{3/2}}$ is constant.
+\end{theorem}
+  
+\end{frame}
+
+\begin{frame}{A simpler model}
+    Let us suppose that in our model the stochastic component is null, i.e. $\eta_i\equiv0$. This assumption describes a closed economic system, in which the two agents interact without any external contribution. Then we end up with:
+
+\[\begin{cases}
+v^{*}=\left(1-\gamma\right)v+\gamma w \\
+w^{*}=\left(1-\gamma\right)w+\gamma v
+\end{cases}\]
+
+
+\end{frame}
+
+\begin{frame}{A simpler model}
+    The corresponding Fokker-Planck equation is:
+
+\begin{equation*}
+    \frac{\partial h}{\partial t}=\gamma\frac{\partial}{\partial v}((v-M_E)h)
+\end{equation*}
+
+Which can be rewritten as:
+\begin{equation*}\label{eq2}
+    \partial_th-\gamma (v-M_E)\partial_v h=\gamma h
+\end{equation*}
+
+In which we recognize a semilinear PDE. 
+\end{frame}
+
+\begin{frame}{A simpler model}
+    By the method of characteristics we solve the PDE. We have to solve the following Cauchy's problem:
+\[\begin{cases}
+\dot{\alpha}=-\gamma (\alpha - M_E) \\
+\dot{\beta}=\gamma \beta
+\end{cases},\quad \begin{cases}
+\alpha(0)=r \\
+\beta(0)=h_0(r)
+\end{cases}\]
+
+Where we set $h_0$ to be the initial distribution of wealth. It is solved by:
+    \[\alpha(t)=(r-M_E)e^{-\gamma t}+M_E,\quad \beta(t)=h_0(r)e^{\gamma t}\]
+\end{frame}
+
+\begin{frame}{A simpler model}
+
+    Then by inverting $v=\alpha(t,r)$ we get:
+
+\hspace{5mm}
+
+\[r=(v-M_E)e^{\gamma t}+M_E\]
+
+And then:
+
+\hspace{5mm}
+
+\[h(v,t)=e^{\gamma t}h_0\left((v-M_E)e^{\gamma t}+M_E\right)\]
+
+\end{frame}
+
+\begin{frame}{The uniform distribution}
+    If we assume that wealth is uniformly distributed over a closed interval $[0,2M_E]$ then while time passes the distribution collapses into a Dirac delta centered in the average $M_E$. For $M_E=5$ and $\gamma=0.2$ we get:
+
+\begin{center}
+\scalebox{0.7}{
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = left,
+    xlabel = \(v\),
+    ylabel = {\(h(v)\)}, 
+    ymin=0,
+    ymax=20,
+]
+
+\addplot[
+domain=0:10,
+smaples=100,
+color=grey
+] coordinates {(5,0)(5,20)};
+%Below the red parabola is defined
+\addplot [
+    domain=0:10,
+    samples=100, 
+    color=red,
+]
+{5};
+\addlegendentry{$t=0$}
+%Here the blue parabola is defined
+\addplot [
+    domain=0:10, 
+    samples=100, 
+    color=blue,
+    ]
+    {6};
+\addlegendentry{$t=1$}
+
+\addplot [
+domain=1:9,
+samples=100,
+color=green,
+]{7};
+\addlegendentry{$t=2$}
+
+\addplot [
+domain=2:8,
+samples=100,
+color=yellow,
+]{9};
+\addlegendentry{$t=3$}
+
+\addplot [
+domain=3:7,
+samples=100,
+color=orange,
+]{11};
+\addlegendentry{$t=4$}
+
+\addplot [
+domain=4:6,
+samples=100,
+color=lightblue,
+]{14};
+\addlegendentry{$t=5$}
+
+\addplot [
+domain=4.5:5.5,
+samples=100,
+color=brown,
+]{17};
+\addlegendentry{$t=6$}
+
+
+\addplot [
+domain=4.8:5.2,
+samples=100,
+color=purple,
+]{20};
+\addlegendentry{$t=7$}
+
+\end{axis}
+\end{tikzpicture}}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Bibliography}
+    \nocite{Furioli2017FokkerPlanckEI}
+    \nocite{second}
+    \nocite{Cordier_2005}
+   
+   \printbibliography
+\end{frame}
+
+\end{document}
